@@ -12,6 +12,7 @@ import { JournalScreen } from './src/screens/JournalScreen';
 import { AddEntryScreen } from './src/screens/AddEntryScreen';
 import { EntryDetailScreen } from './src/screens/EntryDetailScreen';
 import { JournalProvider } from './src/context/JournalContext';
+import { ToastProvider } from './src/components/Toast';
 import { colors } from './src/theme/colors';
 
 const navTheme: Theme = {
@@ -35,17 +36,19 @@ export default function App() {
 
   return (
     <JournalProvider>
-      <NavigationContainer theme={navTheme}>
-        <StatusBar style="dark" />
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="SignIn" component={SignInScreen} />
-          <Stack.Screen name="SignUp" component={SignUpScreen} />
-          <Stack.Screen name="Journal" component={JournalScreen} />
-          <Stack.Screen name="AddEntry" component={AddEntryScreen} />
-          <Stack.Screen name="EntryDetail" component={EntryDetailScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <ToastProvider>
+        <NavigationContainer theme={navTheme}>
+          <StatusBar style="dark" />
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="SignUp" component={SignUpScreen} />
+            <Stack.Screen name="Journal" component={JournalScreen} />
+            <Stack.Screen name="AddEntry" component={AddEntryScreen} />
+            <Stack.Screen name="EntryDetail" component={EntryDetailScreen} />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </ToastProvider>
     </JournalProvider>
   );
 }

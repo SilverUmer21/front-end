@@ -50,7 +50,7 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
         <Text style={styles.title}>EmoSante</Text>
         <Text style={styles.subtitle}>Journal • Breathe • Grow</Text>
         <View style={styles.buttons}>
-          <CalmButton title="Sign Up" onPress={() => navigation.navigate('Journal')} testID="btn-signup" />
+          <CalmButton title="Sign Up" onPress={() => navigation.navigate('SignUp')} testID="btn-signup" />
           <CalmButton title="Sign In" variant="ghost" onPress={() => navigation.navigate('SignIn')} testID="btn-signin" />
         </View>
       </View>

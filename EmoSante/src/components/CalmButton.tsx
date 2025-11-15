@@ -12,30 +12,20 @@ export type CalmButtonProps = {
 };
 
 export const CalmButton: React.FC<CalmButtonProps> = ({ title, onPress, variant = 'primary', disabled, testID }) => {
-  if (variant === 'pastel') {
-    return (
-      <Pressable
-        accessibilityRole="button"
-        testID={testID}
-        onPress={onPress}
-        disabled={disabled}
-        style={({ pressed }) => [
-          styles.base,
-          pressed && styles.pressed,
-          disabled && styles.disabled,
-        ]}
-      >
-        <LinearGradient
-          colors={[colors.lilac, colors.lilacDark]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={styles.pastelGradient}
-        >
-          <Text style={styles.textPastel}>{title}</Text>
-        </LinearGradient>
-      </Pressable>
-    );
-  }
+  // Common ripple config: transparent ripple and borderless to avoid
+  // a rectangular highlight on Android while preserving feedback.
+  const ripple = { color: 'rgba(0,0,0,0.06)', borderless: false };
+
+  const content = (children: React.ReactNode) => (
+    <LinearGradient
+      colors={variant === 'primary' ? [colors.beige, colors.bgDark] : variant === 'pastel' ? [colors.lilac, colors.lilacDark] : ['transparent', 'transparent']}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={[variant === 'pastel' ? styles.pastelGradient : styles.gradient, variant === 'ghost' && styles.ghostGradient]}
+    >
+      {children}
+    </LinearGradient>
+  );
 
   return (
     <Pressable
@@ -43,6 +33,7 @@ export const CalmButton: React.FC<CalmButtonProps> = ({ title, onPress, variant 
       testID={testID}
       onPress={onPress}
       disabled={disabled}
+      android_ripple={ripple}
       style={({ pressed }) => [
         styles.base,
         variant === 'ghost' && styles.ghost,
@@ -50,14 +41,11 @@ export const CalmButton: React.FC<CalmButtonProps> = ({ title, onPress, variant 
         disabled && styles.disabled,
       ]}
     >
-      <LinearGradient
-        colors={variant === 'primary' ? [colors.beige, colors.bgDark] : ['transparent', 'transparent']}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={[styles.gradient, variant === 'ghost' && styles.ghostGradient]}
-      >
-        <Text style={[styles.text, variant === 'primary' ? styles.textPrimary : styles.textGhost]}>{title}</Text>
-      </LinearGradient>
+      {variant === 'pastel' ? (
+        content(<Text style={styles.textPastel}>{title}</Text>)
+      ) : (
+        content(<Text style={[styles.text, variant === 'primary' ? styles.textPrimary : styles.textGhost]}>{title}</Text>)
+      )}
     </Pressable>
   );
 };
@@ -69,8 +57,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   gradient: {
-    paddingVertical: 14,
-    paddingHorizontal: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 14,
@@ -92,8 +80,8 @@ const styles = StyleSheet.create({
     elevation: 0,
   },
   pastelGradient: {
-    paddingVertical: 14,
-    paddingHorizontal: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 14,
@@ -110,7 +98,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   text: {
-    fontSize: 16,
+    fontSize: 14,
     letterSpacing: 0.3,
   },
   textPrimary: {
@@ -122,7 +110,7 @@ const styles = StyleSheet.create({
   },
   textPastel: {
     color: colors.white,
-    fontSize: 16,
+    fontSize: 14,
     letterSpacing: 0.3,
     fontWeight: '600',
   },
